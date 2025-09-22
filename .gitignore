@@ -1,0 +1,21 @@
+# Ignore all files ending with .log
+*.log
+
+# Ignore all files ending with .tmp
+*.tmp
+
+# Ignore the 'build' directory
+build/
+
+# Ignore the 'node_modules' directory (common in JavaScript projects)
+node_modules/
+
+# Ignore specific files
+.DS_Store
+.env
+
+# Ignore a specific file within a directory
+config/local.ini
+
+# Exclude a specific file that would otherwise be ignored
+!important.log

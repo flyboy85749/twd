@@ -1,0 +1,67 @@
+/* Minimal styles for blog and admin pages */
+.blog-list-wrap,
+.admin-wrap {
+  padding: 40px 0;
+}
+.post-item {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 20px;
+}
+.post-item .post-img img {
+  width: 180px;
+  height: 120px;
+  object-fit: cover;
+}
+.post-body {
+  flex: 1;
+}
+.post-title {
+  margin: 0 0 6px 0;
+}
+.post-meta {
+  color: #888;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+.post-single img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin-bottom: 12px;
+}
+
+/* Admin */
+#post-form {
+  max-width: 800px;
+}
+#post-form label {
+  display: block;
+  margin: 10px 0 6px;
+}
+#post-form input[type="text"],
+#post-form input[type="date"],
+#post-form textarea {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+.form-actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+}
+.admin-post-item {
+  border: 1px solid #eee;
+  padding: 10px;
+  margin-bottom: 8px;
+}
+.admin-actions {
+  margin-top: 8px;
+}
+.btn-small {
+  padding: 6px 8px;
+  font-size: 0.9rem;
+}
