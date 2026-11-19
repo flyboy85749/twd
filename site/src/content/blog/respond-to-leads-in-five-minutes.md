@@ -2,6 +2,8 @@
 title: Why answering leads within five minutes matters
 description: Most service businesses lose jobs to whoever replies first. Here's how small shops can respond faster without being glued to their phone.
 date: 2026-11-05
+cover: ../../assets/blog/fast-lead-follow-up.svg
+coverAlt: A phone showing a new lead, an instant reply, and a booking check mark, next to a stopwatch reading under a minute.
 ---
 
 Picture someone whose AC died in July. They search, find three companies, and fill out all three contact forms. Whoever calls back first usually gets the job, and a reply two hours later often reaches someone who has already booked.

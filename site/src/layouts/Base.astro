@@ -8,8 +8,10 @@ interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
+  /** Site-relative path to a 1200x630 share image; defaults to /og.png. */
+  image?: string;
 }
-const { title, description = site.description, noindex = false } = Astro.props;
+const { title, description = site.description, noindex = false, image = '/og.png' } = Astro.props;
 const fullTitle = title ? `${title} | ${site.name}` : `${site.name}: Tucson web developer for small businesses`;
 const canonical = new URL(Astro.url.pathname, site.url).href;
 
@@ -57,7 +59,7 @@ const localBusiness = {
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL('/og.png', site.url).href} />
+    <meta property="og:image" content={new URL(image, site.url).href} />
     <meta name="twitter:card" content="summary_large_image" />
 
     <script type="application/ld+json" set:html={JSON.stringify(localBusiness)} />

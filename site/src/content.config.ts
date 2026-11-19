@@ -4,12 +4,16 @@ import { z } from 'astro/zod';
 
 const blog = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    date: z.coerce.date(),
-    draft: z.boolean().default(false),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      description: z.string(),
+      date: z.coerce.date(),
+      draft: z.boolean().default(false),
+      // 1200x630 illustration in src/assets/blog/ (SVG is fine; Astro rasterizes it).
+      cover: image(),
+      coverAlt: z.string(),
+    }),
 });
 
 const services = defineCollection({

@@ -2,6 +2,8 @@
 title: What a small business website costs in Tucson
 description: Real price ranges for a local business website, what drives the cost up, and the ongoing costs people forget to budget for.
 date: 2026-11-19
+cover: ../../assets/blog/website-costs.svg
+coverAlt: A gold price tag with a dollar sign hanging inside a turquoise arched doorway in a rose plaster wall.
 ---
 
 "How much does a website cost?" is like asking how much a truck costs. It depends on what you need it to haul. Here are honest ranges for Tucson small businesses, and what moves the price.
