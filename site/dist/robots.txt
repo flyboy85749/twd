@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /contact.php
+Disallow: /chat.php
+Disallow: /chat-knowledge.txt
 
 Sitemap: https://tucsonwebdevelopment.net/sitemap-index.xml
