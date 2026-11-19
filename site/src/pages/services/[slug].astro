@@ -1,0 +1,48 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ArchButton from '../../components/ArchButton.astro';
+import { priceLines, usd } from '../../data/pricing';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+  return services.map((s) => ({ params: { slug: s.id }, props: { service: s } }));
+}
+const { service } = Astro.props;
+const { Content } = await render(service);
+const line = priceLines.find((l) => l.id === service.data.pricing);
+---
+
+<Base title={service.data.title} description={service.data.summary}>
+  <article class="wrap py-16">
+    <p class="font-display text-[0.95rem] font-semibold"><a href="/services/">Services</a></p>
+    <h1 class="mt-3 max-w-[20ch]">{service.data.title}</h1>
+    <p class="measure mt-5 text-[1.2rem] text-ink-soft">{service.data.summary}</p>
+    <div class="prose-twd measure mt-10">
+      <Content />
+    </div>
+    {
+      line && (
+        <aside class="price-note measure mt-12">
+          <h2 class="text-[1.3rem]">{line.title} pricing</h2>
+          <p class="mt-2">
+            Packages run from {usd(line.tiers[0].price)} to {usd(line.tiers[2].price)}, at a fixed price agreed before work starts.
+          </p>
+          <p class="mt-2">
+            <a href={`/pricing/#${line.id}`}>Compare {line.title.toLowerCase()} packages</a>
+          </p>
+        </aside>
+      )
+    }
+    <div class="mt-10 flex flex-wrap gap-3">
+      <ArchButton href="/contact/">Start your project</ArchButton>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .price-note {
+    border-left: 6px solid var(--color-ochre);
+    padding: 0.25rem 0 0.25rem 1.25rem;
+  }
+</style>

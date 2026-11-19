@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+const posts = (await getCollection('blog', (p) => !p.data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+const fmt = (d: Date) => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+---
+
+<Base title="Blog" description="Practical advice on websites, local SEO, and lead follow-up for Tucson small business owners.">
+  <section class="wrap py-16">
+    <h1>Blog</h1>
+    <p class="measure mt-5 text-[1.15rem] text-ink-soft">
+      Plain-language advice for small business owners on websites, getting found on Google, and following up with leads.
+    </p>
+    <ul class="mt-12">
+      {
+        posts.map((p) => (
+          <li class="grid gap-1 border-t border-line py-6 md:grid-cols-[12rem_1fr] md:gap-8">
+            <time datetime={p.data.date.toISOString()} class="text-[0.95rem] text-ink-soft">{fmt(p.data.date)}</time>
+            <div>
+              <h2 class="text-[1.4rem]">
+                <a href={`/blog/${p.id}/`} class="text-ink no-underline hover:underline">{p.data.title}</a>
+              </h2>
+              <p class="mt-2 text-ink-soft">{p.data.description}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Base>

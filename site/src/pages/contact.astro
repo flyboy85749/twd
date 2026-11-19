@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { site } from '../data/site';
+---
+
+<Base title="Contact" description="Start a website, chatbot, or automation project with Tucson Web Development. I reply within one business day.">
+  <section class="wrap grid gap-14 py-16 lg:grid-cols-[1.5fr_1fr]">
+    <div>
+      <h1>Start your project</h1>
+      <p class="measure mt-5 mb-10 text-[1.15rem] text-ink-soft">
+        Tell me a little about your business. You'll get a reply within one business day, usually sooner.
+      </p>
+      <ContactForm />
+    </div>
+    <aside class="lg:pt-24">
+      <h2 class="text-[1.3rem]">Prefer to call?</h2>
+      <p class="mt-3"><a href={site.phoneHref} class="font-display text-[1.4rem] font-bold">{site.phone}</a></p>
+      <p class="mt-1 text-[1rem] text-ink-soft">{site.hours}</p>
+
+      <h2 class="mt-10 text-[1.3rem]">Email</h2>
+      <p class="mt-3"><a href={`mailto:${site.email}`}>{site.email}</a></p>
+
+      <h2 class="mt-10 text-[1.3rem]">Office</h2>
+      <address class="mt-3 not-italic">
+        {site.address.street}<br />{site.address.city}, {site.address.region} {site.address.postal}
+      </address>
+      <p class="mt-2 text-[1rem] text-ink-soft">I'm happy to meet anywhere in the Tucson area, or over Zoom.</p>
+    </aside>
+  </section>
+</Base>

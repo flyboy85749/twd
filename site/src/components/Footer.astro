@@ -1,0 +1,53 @@
+---
+import Logo from './Logo.astro';
+import { nav, site } from '../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-ink text-plaster">
+  <div class="wrap grid gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr]">
+    <div>
+      <Logo inverse />
+      <p class="mt-4 max-w-sm text-[1rem] text-plaster/80">{site.tagline}</p>
+    </div>
+
+    <nav aria-label="Footer">
+      <h2 class="footer-h">Pages</h2>
+      <ul class="space-y-1.5">
+        {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        <li><a href="/contact/">Contact</a></li>
+        <li><a href="/privacy/">Privacy</a></li>
+      </ul>
+    </nav>
+
+    <address class="not-italic">
+      <h2 class="footer-h">Visit or call</h2>
+      <p>
+        {site.address.street}<br />{site.address.city}, {site.address.region} {site.address.postal}
+      </p>
+      <p class="mt-2"><a href={site.phoneHref}>{site.phone}</a></p>
+      <p class="mt-2 text-plaster/80">{site.hours}</p>
+    </address>
+  </div>
+
+  <div class="border-t border-plaster/15">
+    <p class="wrap py-5 text-[0.9rem] text-plaster/70">
+      © {year} {site.name}. Building for the web since {site.since}. Need a site for a church or ministry? See my sister
+      studio, <a href={site.sister.url}>{site.sister.name}</a>.
+    </p>
+  </div>
+</footer>
+
+<style>
+  footer a {
+    color: var(--color-plaster);
+  }
+  footer a:hover {
+    color: var(--color-ochre);
+  }
+  .footer-h {
+    font-size: 1rem;
+    color: var(--color-ochre);
+    margin-bottom: 0.75rem;
+  }
+</style>

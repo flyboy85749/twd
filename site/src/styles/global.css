@@ -1,0 +1,132 @@
+@import "tailwindcss";
+@import "@fontsource-variable/archivo/wdth.css";
+@import "@fontsource-variable/source-serif-4";
+
+/*
+  Barrio Viejo palette: flat plaster walls, painted doors, monsoon-sky ink.
+  Arches are reserved for primary actions (see ArchButton.astro).
+*/
+@theme {
+  --color-ink: #1b2a33;
+  --color-ink-soft: #3d4f5a;
+  --color-plaster: #fafaf7;
+  --color-wall: #e8b4a8;
+  --color-wall-deep: #c98a7b;
+  --color-ochre: #d9a441;
+  --color-door: #137a7f;
+  --color-door-dark: #0d5c60;
+  --color-saguaro: #3f6b4a;
+  --color-line: #d9d6cf;
+
+  --font-display: "Archivo Variable", "Arial Narrow", sans-serif;
+  --font-serif: "Source Serif 4 Variable", Georgia, serif;
+}
+
+@layer base {
+  html {
+    background: var(--color-plaster);
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    background: var(--color-plaster);
+  }
+
+  /* Expanded, heavy display type: echoes hand-painted storefront lettering. */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-variation-settings: "wdth" 125;
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  h1 {
+    font-size: clamp(2.25rem, 6vw, 4.25rem);
+  }
+  h2 {
+    font-size: clamp(1.75rem, 3.6vw, 2.6rem);
+  }
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    color: var(--color-door-dark);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  a:hover {
+    color: var(--color-door);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-ochre);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .wrap {
+    width: 100%;
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+  @media (min-width: 640px) {
+    .wrap {
+      padding-inline: 1.5rem;
+    }
+  }
+  .measure {
+    max-width: 38rem;
+  }
+
+  /* Long-form text: blog posts, service pages, privacy. */
+  .prose-twd > * + * {
+    margin-top: 1.1em;
+  }
+  .prose-twd h2 {
+    font-size: 1.6rem;
+    margin-top: 2em;
+  }
+  .prose-twd h3 {
+    margin-top: 1.6em;
+  }
+  .prose-twd ul {
+    list-style: disc;
+    padding-left: 1.25em;
+  }
+  .prose-twd ol {
+    list-style: decimal;
+    padding-left: 1.25em;
+  }
+  .prose-twd li + li {
+    margin-top: 0.35em;
+  }
+  .prose-twd blockquote {
+    border-left: 4px solid var(--color-wall);
+    padding-left: 1rem;
+    font-style: italic;
+  }
+}

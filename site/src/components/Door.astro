@@ -1,0 +1,46 @@
+---
+// The one decorative element: a Barrio Viejo doorway with the real street number on a tile plaque.
+---
+
+<svg viewBox="0 0 240 340" class="door" role="img" aria-labelledby="door-title">
+  <title id="door-title">A turquoise arched door in a rose plaster wall, with a tile house number reading 5902</title>
+  <!-- recessed frame -->
+  <path d="M30 340V120a90 90 0 0 1 180 0v220z" fill="#c98a7b"></path>
+  <!-- door -->
+  <path d="M44 340V122a76 76 0 0 1 152 0v218z" fill="#137a7f"></path>
+  <!-- transom window -->
+  <path d="M64 124a56 56 0 0 1 112 0z" fill="#0d5c60"></path>
+  <path d="M120 68v56M80 102l40 22M160 102l-40 22" stroke="#137a7f" stroke-width="4"></path>
+  <!-- center seam and panels -->
+  <path d="M120 140v200" stroke="#0d5c60" stroke-width="4"></path>
+  <rect x="62" y="150" width="44" height="80" rx="3" fill="none" stroke="#0d5c60" stroke-width="4"></rect>
+  <rect x="134" y="150" width="44" height="80" rx="3" fill="none" stroke="#0d5c60" stroke-width="4"></rect>
+  <rect x="62" y="246" width="44" height="78" rx="3" fill="none" stroke="#0d5c60" stroke-width="4"></rect>
+  <rect x="134" y="246" width="44" height="78" rx="3" fill="none" stroke="#0d5c60" stroke-width="4"></rect>
+  <!-- handles -->
+  <circle cx="110" cy="240" r="5" fill="#d9a441"></circle>
+  <circle cx="130" cy="240" r="5" fill="#d9a441"></circle>
+  <!-- tile house number -->
+  <g class="plaque">
+    <rect x="-2" y="168" width="28" height="92" rx="2" fill="#fafaf7" stroke="#d9a441" stroke-width="3"></rect>
+    <text x="12" y="191" text-anchor="middle">5</text>
+    <text x="12" y="212" text-anchor="middle">9</text>
+    <text x="12" y="233" text-anchor="middle">0</text>
+    <text x="12" y="254" text-anchor="middle">2</text>
+  </g>
+</svg>
+
+<style>
+  .door {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .plaque text {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 19px;
+    fill: #1b4f8a;
+  }
+</style>

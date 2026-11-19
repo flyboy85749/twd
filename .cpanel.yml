@@ -1,0 +1,8 @@
+---
+# cPanel Git Version Control deploy for the Astro rebuild.
+# Build locally first (cd site && npm run build) and commit site/dist, then click
+# "Deploy HEAD Commit" in cPanel. cPanel can't run the Astro build itself.
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/freedmou/tucsonwebdevelopment.net/
+    - /bin/cp -R site/dist/. $DEPLOYPATH

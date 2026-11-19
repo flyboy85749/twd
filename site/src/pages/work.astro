@@ -1,0 +1,22 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import WorkCard from '../components/WorkCard.astro';
+import ArchButton from '../components/ArchButton.astro';
+const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base title="Work" description="Websites, web apps, and concept sites built by Tucson Web Development.">
+  <section class="wrap py-16">
+    <h1>Work</h1>
+    <p class="measure mt-5 text-[1.15rem] text-ink-soft">
+      Business sites, blogs, and small web apps. Concept sites are labeled as concepts.
+    </p>
+    <div class="mt-12 grid gap-14 md:grid-cols-2">
+      {work.map((item, i) => <WorkCard item={item} eager={i < 2} />)}
+    </div>
+    <div class="mt-16">
+      <ArchButton href="/contact/">Start your project</ArchButton>
+    </div>
+  </section>
+</Base>

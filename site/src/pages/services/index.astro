@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ArchButton from '../../components/ArchButton.astro';
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base title="Services" description="Websites, local SEO, online payments, AI chatbots, and lead follow-up automation for Tucson small businesses.">
+  <section class="wrap py-16">
+    <h1>Services</h1>
+    <p class="measure mt-5 text-[1.15rem] text-ink-soft">
+      Everything a local business needs to get found online, look trustworthy, and follow up with every lead.
+    </p>
+    <ul class="mt-12">
+      {
+        services.map((s) => (
+          <li class="grid gap-2 border-t border-line py-8 md:grid-cols-[20rem_1fr] md:gap-10">
+            <h2 class="text-[1.5rem]">
+              <a href={`/services/${s.id}/`} class="text-ink no-underline hover:underline">{s.data.title}</a>
+            </h2>
+            <div>
+              <p>{s.data.summary}</p>
+              <p class="mt-2"><a href={`/services/${s.id}/`}>More about {s.data.title}</a></p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="mt-10">
+      <ArchButton href="/contact/">Start your project</ArchButton>
+    </div>
+  </section>
+</Base>
