@@ -1,0 +1,269 @@
+---
+// The site's own chat assistant: a live demo of the Starter chatbot package.
+// Talks to /chat.php, which holds the API key and the rate limits.
+import { site } from '../data/site';
+---
+
+<div class="chat" id="chat" data-open="false">
+  <section class="chat-panel" id="chat-panel" role="dialog" aria-label="Chat with the Tucson Web Development assistant" hidden>
+    <header class="chat-head">
+      <div>
+        <p class="chat-title">Ask about pricing and services</p>
+        <p class="chat-label">
+          This assistant is the <a href="/pricing/#chatbot">Starter chatbot package</a>.
+        </p>
+      </div>
+      <button type="button" class="chat-close" id="chat-close" aria-label="Close chat">×</button>
+    </header>
+
+    <ol class="chat-log" id="chat-log" aria-live="polite">
+      <li class="msg bot">
+        Hi! I'm an AI assistant. Ask me about websites, chatbots, automation, prices, or how to get started.
+      </li>
+    </ol>
+
+    <form class="chat-form" id="chat-form">
+      <label for="chat-input" class="sr-only">Your question</label>
+      <input id="chat-input" type="text" maxlength="800" autocomplete="off" placeholder="How much is a website?" required />
+      <button type="submit">Send</button>
+    </form>
+    <p class="chat-fine">AI answers can be wrong. For anything firm, call <a href={site.phoneHref}>{site.phone}</a>.</p>
+  </section>
+
+  <button type="button" class="chat-bubble" id="chat-toggle" aria-expanded="false" aria-controls="chat-panel">
+    <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"
+      ><path fill="currentColor" d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" /></svg
+    >
+    <span class="sr-only">Chat with us</span>
+  </button>
+</div>
+
+<script>
+  type Msg = { role: 'user' | 'assistant'; content: string };
+
+  const root = document.getElementById('chat')!;
+  const panel = document.getElementById('chat-panel')!;
+  const toggle = document.getElementById('chat-toggle') as HTMLButtonElement;
+  const close = document.getElementById('chat-close') as HTMLButtonElement;
+  const log = document.getElementById('chat-log')!;
+  const form = document.getElementById('chat-form') as HTMLFormElement;
+  const input = document.getElementById('chat-input') as HTMLInputElement;
+  const send = form.querySelector('button') as HTMLButtonElement;
+  const history: Msg[] = [];
+
+  const setOpen = (open: boolean) => {
+    root.dataset.open = String(open);
+    panel.hidden = !open;
+    toggle.setAttribute('aria-expanded', String(open));
+    if (open) input.focus();
+    else toggle.focus();
+  };
+  toggle.addEventListener('click', () => setOpen(panel.hidden));
+  close.addEventListener('click', () => setOpen(false));
+  panel.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') setOpen(false);
+  });
+
+  // Plain text only; turn bare site URLs and phone numbers into links.
+  const addMsg = (who: 'user' | 'bot', text: string) => {
+    const li = document.createElement('li');
+    li.className = `msg ${who}`;
+    const parts = text.split(/((?:https?:\/\/)?tucsonwebdevelopment\.net[^\s,)]*|\(520\) 999-7374)/g);
+    for (const part of parts) {
+      if (/tucsonwebdevelopment\.net/.test(part)) {
+        const a = document.createElement('a');
+        a.href = part.startsWith('http') ? part.replace(/[.]$/, '') : 'https://' + part.replace(/[.]$/, '');
+        a.textContent = part;
+        li.append(a);
+      } else if (part === '(520) 999-7374') {
+        const a = document.createElement('a');
+        a.href = 'tel:+15209997374';
+        a.textContent = part;
+        li.append(a);
+      } else {
+        li.append(document.createTextNode(part));
+      }
+    }
+    log.append(li);
+    log.scrollTop = log.scrollHeight;
+    return li;
+  };
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    addMsg('user', text);
+    history.push({ role: 'user', content: text });
+
+    send.disabled = true;
+    const typing = addMsg('bot', '…');
+    typing.classList.add('typing');
+    let reply = "Sorry, something went wrong. Please call (520) 999-7374 or use the contact form.";
+    try {
+      const res = await fetch('/chat.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: history.slice(-12) }),
+      });
+      const data = await res.json();
+      if (typeof data.reply === 'string' && data.reply) reply = data.reply;
+      if (res.ok) history.push({ role: 'assistant', content: reply });
+      else history.pop();
+    } catch {
+      history.pop();
+    }
+    typing.remove();
+    addMsg('bot', reply);
+    send.disabled = false;
+    input.focus();
+  });
+</script>
+
+<style>
+  .chat {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.75rem;
+    font-family: var(--font-serif);
+  }
+  .chat-bubble {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 999px;
+    background: var(--color-door);
+    color: var(--color-plaster);
+    box-shadow: 0 6px 18px rgb(27 42 51 / 0.25);
+    cursor: pointer;
+  }
+  .chat-bubble:hover {
+    background: var(--color-door-dark);
+  }
+  .chat-panel {
+    display: flex;
+    flex-direction: column;
+    width: min(23rem, calc(100vw - 2rem));
+    height: min(32rem, calc(100vh - 6.5rem));
+    background: var(--color-plaster);
+    border: 1px solid var(--color-line);
+    border-radius: 0.75rem;
+    box-shadow: 0 12px 32px rgb(27 42 51 / 0.22);
+    overflow: hidden;
+  }
+  .chat-panel[hidden] {
+    display: none;
+  }
+  .chat-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.8rem 1rem;
+    background: var(--color-ink);
+    color: var(--color-plaster);
+  }
+  .chat-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+  .chat-label {
+    margin-top: 0.15rem;
+    font-size: 0.8rem;
+    line-height: 1.35;
+    color: rgb(250 250 247 / 0.8);
+  }
+  .chat-label a {
+    color: var(--color-ochre);
+    text-decoration: underline;
+  }
+  .chat-close {
+    font-size: 1.6rem;
+    line-height: 1;
+    color: var(--color-plaster);
+    cursor: pointer;
+    align-self: flex-start;
+  }
+  .chat-log {
+    flex: 1;
+    overflow-y: auto;
+    list-style: none;
+    margin: 0;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .msg {
+    max-width: 85%;
+    padding: 0.55rem 0.8rem;
+    border-radius: 0.75rem;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .msg.bot {
+    align-self: flex-start;
+    background: #f0ede6;
+  }
+  .msg.user {
+    align-self: flex-end;
+    background: var(--color-door);
+    color: var(--color-plaster);
+  }
+  .msg a {
+    text-decoration: underline;
+  }
+  .msg.typing {
+    color: var(--color-ink-soft);
+  }
+  .chat-form {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border-top: 1px solid var(--color-line);
+  }
+  .chat-form input {
+    flex: 1;
+    min-width: 0;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid var(--color-line);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    background: white;
+  }
+  .chat-form button {
+    padding: 0.5rem 0.9rem;
+    border-radius: 0.5rem;
+    background: var(--color-door);
+    color: var(--color-plaster);
+    font-family: var(--font-display);
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .chat-form button:disabled {
+    opacity: 0.6;
+  }
+  .chat-fine {
+    padding: 0 0.75rem 0.6rem;
+    font-size: 0.75rem;
+    color: var(--color-ink-soft);
+  }
+  .chat-fine a {
+    text-decoration: underline;
+  }
+  @media print {
+    .chat {
+      display: none;
+    }
+  }
+</style>
