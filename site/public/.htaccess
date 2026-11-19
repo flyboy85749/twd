@@ -1,0 +1,38 @@
+# Tucson Web Development (static Astro build)
+Options -Indexes
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Force HTTPS and the bare domain
+  RewriteCond %{HTTPS} off [OR]
+  RewriteCond %{HTTP_HOST} ^www\. [NC]
+  RewriteRule ^ https://tucsonwebdevelopment.net%{REQUEST_URI} [L,R=301]
+
+  # Old pages from the previous site
+  RewriteRule ^index\.html$ / [L,R=301]
+  RewriteRule ^blog\.html$ /blog/ [L,R=301]
+  RewriteRule ^(admin|login|change-password)\.html$ / [L,R=301]
+  RewriteRule ^api/ - [G]
+</IfModule>
+
+# Never serve dotfiles or leftovers from the old Node app
+<FilesMatch "^(\.env|.*\.db|package(-lock)?\.json|server\.js)$">
+  Require all denied
+</FilesMatch>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+</IfModule>

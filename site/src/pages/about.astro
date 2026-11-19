@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+import ArchButton from '../components/ArchButton.astro';
+import { site } from '../data/site';
+const tools = ['HTML, CSS, and JavaScript', 'Astro and Next.js', 'React and TypeScript', 'WordPress', 'Node.js and Express', 'PostgreSQL, MySQL, and Supabase', 'Stripe and Square', 'n8n automation', 'Claude and OpenAI'];
+---
+
+<Base title="About" description="Tucson Web Development is run by Bill, a Tucson web developer building websites for local businesses since 2007.">
+  <section class="wrap grid gap-14 py-16 lg:grid-cols-[1.5fr_1fr]">
+    <div>
+      <h1>About</h1>
+      <div class="prose-twd measure mt-8">
+        <p>
+          I'm {site.owner}, and Tucson Web Development is me: one developer, based in Tucson, building
+          websites since {site.since}.
+        </p>
+        <p>
+          Most of my clients are businesses that don't have a marketing department: contractors, restaurants, shops,
+          and service companies. They need a site that loads fast, shows up on Google, and makes the phone ring, and they
+          need someone who will answer when they call.
+        </p>
+        <p>
+          Lately much of my work is the part that comes after the website: chatbots that answer common questions and
+          automations that reply to new leads in seconds. For a small team, that follow-up often matters more than the
+          design.
+        </p>
+        <h2>How I work</h2>
+        <ul>
+          <li>Fixed, written quotes. You know the price before anything starts.</li>
+          <li>You own everything: your domain, your code, and your content.</li>
+          <li>Plain English, no jargon, and honest advice, even when the answer is "you don't need that."</li>
+          <li>Accessible by default. Every site is built to WCAG AA so everyone can use it.</li>
+        </ul>
+        <p>
+          I also run <a href={site.sister.url}>{site.sister.name}</a>, a sister studio for churches and ministries.
+        </p>
+      </div>
+      <div class="mt-10"><ArchButton href="/contact/">Start your project</ArchButton></div>
+    </div>
+    <aside>
+      <h2 class="text-[1.3rem]">Tools I use</h2>
+      <ul class="mt-4 space-y-1.5 text-[1rem]">
+        {tools.map((t) => <li class="border-b border-line pb-1.5">{t}</li>)}
+      </ul>
+    </aside>
+  </section>
+</Base>

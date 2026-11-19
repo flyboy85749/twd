@@ -1,0 +1,157 @@
+---
+import { priceLines, usd } from '../data/pricing';
+---
+
+<form action="/contact.php" method="post" class="contact-form" id="contact-form">
+  <div class="field">
+    <label for="cf-name">Name</label>
+    <input id="cf-name" name="name" type="text" autocomplete="name" required maxlength="120" />
+  </div>
+
+  <div class="field">
+    <label for="cf-email">Email</label>
+    <input id="cf-email" name="email" type="email" autocomplete="email" required maxlength="200" />
+  </div>
+
+  <div class="field">
+    <label for="cf-phone">Phone <span class="opt">(optional)</span></label>
+    <input id="cf-phone" name="phone" type="tel" autocomplete="tel" maxlength="40" />
+    <label class="check">
+      <input type="checkbox" name="sms_ok" value="yes" />
+      <span>You may text me about this project. Message and data rates may apply. Reply STOP to opt out.</span>
+    </label>
+  </div>
+
+  <div class="field">
+    <label for="cf-site">Current website <span class="opt">(optional)</span></label>
+    <input id="cf-site" name="website" type="text" inputmode="url" placeholder="yourbusiness.com" maxlength="200" />
+  </div>
+
+  <div class="field">
+    <label for="cf-package">What do you need?</label>
+    <select id="cf-package" name="package">
+      <option value="not-sure">Not sure yet. Let's talk.</option>
+      <option value="website-audit">Free website audit</option>
+      <option value="automation-audit">Free automation audit</option>
+      {
+        priceLines.map((line) => (
+          <optgroup label={line.title}>
+            {line.tiers.map((t) => (
+              <option value={t.id}>
+                {line.title}: {t.name} ({usd(t.price)})
+              </option>
+            ))}
+          </optgroup>
+        ))
+      }
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="cf-details">Tell me about your business and what you'd like to change</label>
+    <textarea id="cf-details" name="details" rows="6" required maxlength="5000"></textarea>
+  </div>
+
+  <!-- Spam traps: a hidden field bots fill in, and the time the form was shown. -->
+  <div class="hp" aria-hidden="true">
+    <label for="cf-company">Leave this empty</label>
+    <input id="cf-company" name="company" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+  <input type="hidden" name="ts" id="cf-ts" value="" />
+
+  <button type="submit" class="send">Send message</button>
+  <p class="note">I reply within one business day. Your information is used only to answer you. See the <a href="/privacy/">privacy policy</a>.</p>
+</form>
+
+<script>
+  const ts = document.getElementById('cf-ts') as HTMLInputElement | null;
+  if (ts) ts.value = String(Math.floor(Date.now() / 1000));
+
+  const pkg = new URLSearchParams(location.search).get('package');
+  const select = document.getElementById('cf-package') as HTMLSelectElement | null;
+  if (pkg && select && [...select.options].some((o) => o.value === pkg)) select.value = pkg;
+</script>
+
+<style>
+  .contact-form {
+    display: grid;
+    gap: 1.25rem;
+    max-width: 38rem;
+  }
+  .field {
+    display: grid;
+    gap: 0.4rem;
+  }
+  label {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+  .opt {
+    font-weight: 400;
+    color: var(--color-ink-soft);
+  }
+  input[type='text'],
+  input[type='email'],
+  input[type='tel'],
+  select,
+  textarea {
+    width: 100%;
+    font: inherit;
+    font-size: 1rem;
+    padding: 0.7rem 0.8rem;
+    background: #fff;
+    border: 2px solid var(--color-ink-soft);
+    border-radius: 0.375rem;
+    color: var(--color-ink);
+  }
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-color: var(--color-door);
+    outline: 3px solid var(--color-ochre);
+    outline-offset: 1px;
+  }
+  .check {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 0.9rem;
+    color: var(--color-ink-soft);
+  }
+  .check input {
+    margin-top: 0.3rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    accent-color: var(--color-door);
+  }
+  .hp {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .send {
+    justify-self: start;
+    min-height: 3.25rem;
+    padding: 0.85rem 1.9rem 0.75rem;
+    border-radius: 999px 999px 0.375rem 0.375rem;
+    background: var(--color-door);
+    color: #fff;
+    font-family: var(--font-display);
+    font-variation-settings: 'wdth' 112;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  .send:hover {
+    background: var(--color-door-dark);
+  }
+  .note {
+    font-size: 0.9rem;
+    color: var(--color-ink-soft);
+  }
+</style>

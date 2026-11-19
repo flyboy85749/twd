@@ -1,0 +1,14 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+---
+
+<Base title="Message sent" noindex>
+  <section class="wrap py-24">
+    <h1>Message sent.</h1>
+    <p class="measure mt-5 text-[1.15rem]">
+      Thanks for reaching out. I'll reply within one business day. If it's urgent, call <a href={site.phoneHref}>{site.phone}</a>.
+    </p>
+    <p class="mt-8"><a href="/" class="font-display font-semibold">Back to the home page</a></p>
+  </section>
+</Base>

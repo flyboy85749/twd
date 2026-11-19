@@ -1,0 +1,310 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import ArchButton from '../components/ArchButton.astro';
+import Door from '../components/Door.astro';
+import WorkCard from '../components/WorkCard.astro';
+import { site } from '../data/site';
+import { priceLines, usd } from '../data/pricing';
+import { testimonials } from '../data/testimonials';
+
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order).slice(0, 4);
+const posts = (await getCollection('blog', (p) => !p.data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+const web = priceLines.find((l) => l.id === 'web')!;
+const fmt = (d: Date) => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+---
+
+<Base>
+  <!-- Hero: the rose plaster wall and the door -->
+  <section class="hero">
+    <div class="wrap grid items-end gap-10 pt-14 md:grid-cols-[1fr_15rem] md:pt-20 lg:grid-cols-[1fr_18rem]">
+      <div class="pb-14 md:pb-20">
+        <h1 class="max-w-[14ch]">A Tucson web developer for the businesses down the street.</h1>
+        <p class="measure mt-6 text-[1.2rem]">
+          I'm {site.owner}. I build fast, fixed-price websites for local shops, trades, and restaurants, then add the
+          chatbots and follow-up automation that turn visitors into booked jobs.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <ArchButton href="/contact/">Start your project</ArchButton>
+          <ArchButton href="/contact/?package=website-audit" variant="outline">Get a free website audit</ArchButton>
+        </div>
+        <ul class="facts mt-10">
+          <li>Building websites since {site.since}</li>
+          <li>Fixed-price quotes, in writing</li>
+          <li>Meet in person anywhere in Tucson</li>
+        </ul>
+      </div>
+      <div class="mx-auto w-48 md:w-full">
+        <Door />
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="wrap py-20">
+    <h2>What I build</h2>
+    <ul class="mt-10 grid gap-x-12 md:grid-cols-2">
+      {
+        services.map((s) => (
+          <li class="border-t border-line py-6">
+            <h3>
+              <a href={`/services/${s.id}/`} class="text-ink no-underline hover:underline">
+                {s.data.title}
+              </a>
+            </h3>
+            <p class="mt-2 text-[1rem] text-ink-soft">{s.data.summary}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Automation band -->
+  <section class="bg-ink text-plaster">
+    <div class="wrap grid gap-12 py-20 lg:grid-cols-[1fr_1.2fr]">
+      <div>
+        <h2>Stop losing leads to slow follow-up.</h2>
+        <p class="measure mt-5 text-plaster/85">
+          When someone fills out three contact forms, the first business to reply usually gets the job. I set up systems
+          that reply in seconds, even while you're on a roof or under a sink.
+        </p>
+        <div class="mt-8">
+          <ArchButton href="/contact/?package=automation-audit">Get a free automation audit</ArchButton>
+        </div>
+      </div>
+      <dl class="auto-list">
+        <div>
+          <dt>Instant text and email replies</dt>
+          <dd>New leads hear back in under a minute, with a link to book a time.</dd>
+        </div>
+        <div>
+          <dt>Lead capture around the clock</dt>
+          <dd>A chatbot answers hours, service area, and pricing questions at 10 p.m. and collects contact details.</dd>
+        </div>
+        <div>
+          <dt>Automatic booking and reminders</dt>
+          <dd>Customers pick a time on your calendar, and reminders cut down on no-shows.</dd>
+        </div>
+        <div>
+          <dt>Missed-call text-back</dt>
+          <dd>Can't pick up? The caller gets a text right away instead of dialing your competitor.</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Work -->
+  <section class="wrap py-20">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <h2>Recent work</h2>
+      <a href="/work/" class="font-display font-semibold">See all work</a>
+    </div>
+    <div class="mt-10 grid gap-12 md:grid-cols-2">
+      {work.map((item) => <WorkCard item={item} />)}
+    </div>
+  </section>
+
+  <!-- Process: a real sequence, so it's numbered -->
+  <section class="border-y border-line bg-white">
+    <div class="wrap py-20">
+      <h2>How a project goes</h2>
+      <ol class="steps mt-10 grid gap-8 md:grid-cols-4">
+        <li>
+          <h3>Free call</h3>
+          <p>Thirty minutes, by phone or over coffee. We talk about your customers and what the site needs to do.</p>
+        </li>
+        <li>
+          <h3>Fixed quote</h3>
+          <p>A written price and timeline. No hourly surprises.</p>
+        </li>
+        <li>
+          <h3>Build and review</h3>
+          <p>You see real pages early and give feedback in rounds.</p>
+        </li>
+        <li>
+          <h3>Launch and support</h3>
+          <p>I handle hosting and your domain, then stick around with a 30-day warranty and optional monthly care.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Pricing teaser -->
+  <section class="wrap py-20">
+    <h2>Website packages</h2>
+    <p class="measure mt-4 text-ink-soft">
+      One-time prices, with optional monthly care. Chatbot and automation packages are on the pricing page.
+    </p>
+    <div class="mt-10 grid gap-6 md:grid-cols-3">
+      {
+        web.tiers.map((t) => (
+          <div class="tier">
+            <h3>{t.name}</h3>
+            <p class="tier-price">{usd(t.price)}</p>
+            <p class="text-[1rem] text-ink-soft">{t.bestFor}</p>
+            <p class="mt-3 text-[0.95rem]">Delivered in {t.delivery}</p>
+          </div>
+        ))
+      }
+    </div>
+    <p class="mt-8">
+      <a href="/pricing/" class="font-display font-semibold">Compare every package</a>
+    </p>
+  </section>
+
+  <!-- Local + testimonials -->
+  <section class="wall-strip">
+    <div class="wrap grid gap-12 py-20 lg:grid-cols-2">
+      <div>
+        <h2>Someone you can actually meet.</h2>
+        <p class="measure mt-5">
+          I live and work in Tucson. You can call a 520 number and reach me, meet at a coffee shop on Speedway, or have
+          me come to your shop. When something breaks, you're not filing a ticket with a company three time zones
+          away.
+        </p>
+        <p class="mt-6">
+          <a href={site.phoneHref} class="font-display text-[1.3rem] font-bold text-ink">{site.phone}</a>
+        </p>
+      </div>
+      <div class="grid gap-8">
+        {
+          testimonials.map((t) => (
+            <figure>
+              <blockquote class="text-[1.1rem] italic">“{t.quote}”</blockquote>
+              <figcaption class="mt-2 font-display font-semibold">{t.name}</figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Latest posts -->
+  <section class="wrap py-20">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <h2>From the blog</h2>
+      <a href="/blog/" class="font-display font-semibold">All posts</a>
+    </div>
+    <ul class="mt-8">
+      {
+        posts.map((p) => (
+          <li class="grid gap-1 border-t border-line py-5 md:grid-cols-[12rem_1fr] md:gap-8">
+            <time datetime={p.data.date.toISOString()} class="text-[0.95rem] text-ink-soft">
+              {fmt(p.data.date)}
+            </time>
+            <div>
+              <h3>
+                <a href={`/blog/${p.id}/`} class="text-ink no-underline hover:underline">
+                  {p.data.title}
+                </a>
+              </h3>
+              <p class="mt-1 text-[1rem] text-ink-soft">{p.data.description}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Closing call to action -->
+  <section class="border-t-[6px] border-door bg-white">
+    <div class="wrap py-20">
+      <h2 class="max-w-[18ch]">Tell me what your business needs.</h2>
+      <p class="measure mt-5 text-ink-soft">
+        Send a few lines about your business, or call {site.phone}. I reply within one business day.
+      </p>
+      <div class="mt-8">
+        <ArchButton href="/contact/">Start your project</ArchButton>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    background: var(--color-wall);
+    border-bottom: 10px solid var(--color-wall-deep);
+  }
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.75rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .facts li {
+    position: relative;
+    padding-left: 1rem;
+  }
+  .facts li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.45em;
+    width: 0.45rem;
+    height: 0.6rem;
+    border-radius: 999px 999px 1px 1px;
+    background: var(--color-door);
+  }
+  .auto-list {
+    display: grid;
+    gap: 1.75rem;
+  }
+  @media (min-width: 640px) {
+    .auto-list {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .auto-list dt {
+    font-family: var(--font-display);
+    font-variation-settings: 'wdth' 112;
+    font-weight: 700;
+    color: var(--color-ochre);
+  }
+  .auto-list dd {
+    margin-top: 0.35rem;
+    font-size: 1rem;
+    color: rgb(250 250 247 / 0.85);
+  }
+  .steps {
+    counter-reset: step;
+  }
+  .steps li {
+    counter-increment: step;
+    border-top: 3px solid var(--color-ink);
+    padding-top: 1rem;
+  }
+  .steps li::before {
+    content: counter(step);
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--color-door);
+    margin-bottom: 0.4rem;
+  }
+  .steps p {
+    margin-top: 0.4rem;
+    font-size: 1rem;
+    color: var(--color-ink-soft);
+  }
+  .tier {
+    border: 2px solid var(--color-ink);
+    border-radius: 0.375rem;
+    padding: 1.5rem;
+  }
+  .tier-price {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 2.25rem;
+    color: var(--color-door-dark);
+    margin: 0.25rem 0 0.5rem;
+  }
+  .wall-strip {
+    background: #f3dcd5;
+  }
+</style>

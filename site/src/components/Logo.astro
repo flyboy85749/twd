@@ -1,0 +1,39 @@
+---
+// Arch mark (a doorway) plus wordmark. The turquoise carries over from the original TWD circle logo.
+interface Props {
+  inverse?: boolean;
+}
+const { inverse = false } = Astro.props;
+---
+
+<a href="/" class:list={['logo', { inverse }]} aria-label="Tucson Web Development, home">
+  <svg viewBox="0 0 32 40" width="26" height="32" aria-hidden="true">
+    <path d="M2 40V16a14 14 0 0 1 28 0v24z" fill="#137a7f"></path>
+    <path d="M9 40V18a7 7 0 0 1 14 0v22z" fill={inverse ? '#1b2a33' : '#fafaf7'}></path>
+  </svg>
+  <span>Tucson Web Development</span>
+</a>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 0.6rem;
+    color: var(--color-ink);
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-variation-settings: 'wdth' 125;
+    font-weight: 800;
+    font-size: 1.05rem;
+    line-height: 1;
+  }
+  .logo span {
+    padding-bottom: 0.1rem;
+  }
+  .logo.inverse {
+    color: var(--color-plaster);
+  }
+  .logo:hover {
+    color: inherit;
+  }
+</style>
