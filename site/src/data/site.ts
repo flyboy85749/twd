@@ -5,8 +5,9 @@ export const site = {
   tagline: 'Websites, chatbots, and automation for Tucson small businesses.',
   description:
     'Tucson web developer building fast, fixed-price websites, AI chatbots, and lead follow-up automation for local small businesses.',
-  phone: '(520) 331-0035',
-  phoneHref: 'tel:+15203310035',
+  phone: '(520) 999-7374',
+  phoneHref: 'tel:+15209997374',
+  phoneSchema: '+1-520-999-7374',
   // Shown on the contact page; contact.php delivers form mail to this address.
   email: 'hello@tucsonwebdevelopment.net',
   address: {

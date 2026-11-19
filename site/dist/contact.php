@@ -62,7 +62,7 @@ if (!$sent) {
     header('Content-Type: text/html; charset=utf-8');
     echo '<!doctype html><meta charset="utf-8"><title>Message not sent</title>'
        . '<p style="font-family:sans-serif;max-width:36rem;margin:3rem auto">'
-       . 'Your message couldn\'t be sent because of a server error. Please call (520) 331-0035 instead.</p>';
+       . 'Your message couldn\'t be sent because of a server error. Please call (520) 999-7374 instead.</p>';
     exit;
 }
 
