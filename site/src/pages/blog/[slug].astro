@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import ArchButton from '../../components/ArchButton.astro';
 
@@ -10,14 +11,20 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 const date = post.data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+
+// Social-share image: PNG at the 1200x630 size Facebook, LinkedIn, and X expect.
+const og = await getImage({ src: post.data.cover, format: 'png', width: 1200, height: 630 });
 ---
 
-<Base title={post.data.title} description={post.data.description}>
+<Base title={post.data.title} description={post.data.description} image={og.src}>
   <article class="wrap py-16">
     <p class="font-display text-[0.95rem] font-semibold"><a href="/blog/">Blog</a></p>
     <h1 class="mt-3 max-w-[22ch]">{post.data.title}</h1>
     <p class="mt-4 text-ink-soft"><time datetime={post.data.date.toISOString()}>{date}</time></p>
-    <div class="prose-twd measure mt-10">
+    <figure class="cover mt-10">
+      <Image src={post.data.cover} alt={post.data.coverAlt} loading="eager" />
+    </figure>
+    <div class="prose-twd measure mt-12">
       <Content />
     </div>
     <aside class="measure mt-14 border-t-[3px] border-ink pt-8">
@@ -27,3 +34,17 @@ const date = post.data.date.toLocaleDateString('en-US', { month: 'long', day: 'n
     </aside>
   </article>
 </Base>
+
+<style>
+  .cover {
+    max-width: 48rem;
+    border: 2px solid var(--color-ink);
+    border-radius: 0.375rem;
+    overflow: hidden;
+  }
+  .cover :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+</style>

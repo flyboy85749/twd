@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- rose plaster wall with a recessed arch; a price tag hangs inside it -->
+  <rect width="1200" height="630" fill="#e8b4a8"/>
+  <rect y="590" width="1200" height="40" fill="#c98a7b"/>
+  <path d="M410 590V300a190 190 0 0 1 380 0v290z" fill="#c98a7b"/>
+  <path d="M432 590V302a168 168 0 0 1 336 0v288z" fill="#137a7f"/>
+  <path d="M470 300a130 130 0 0 1 260 0z" fill="#0d5c60"/>
+  <!-- nail and string -->
+  <circle cx="600" cy="196" r="9" fill="#d9a441"/>
+  <!-- two strands meeting at the tag's hole (the rotated hole sits near 587,327) -->
+  <path d="M600 196 C 590 240, 584 290, 581 322" fill="none" stroke="#fafaf7" stroke-width="5" stroke-linecap="round"/>
+  <path d="M600 196 C 600 240, 596 290, 593 322" fill="none" stroke="#fafaf7" stroke-width="5" stroke-linecap="round"/>
+  <!-- tag -->
+  <g transform="rotate(-8 600 420)">
+    <path d="M520 330 L600 290 L680 330 L680 540 Q680 552 668 552 L532 552 Q520 552 520 540 Z" fill="#d9a441"/>
+    <circle cx="600" cy="326" r="13" fill="#137a7f"/>
+    <text x="600" y="500" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="150" fill="#1b2a33">$</text>
+  </g>
+</svg>

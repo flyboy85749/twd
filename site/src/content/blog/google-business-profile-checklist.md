@@ -2,6 +2,8 @@
 title: A 15-minute Google Business Profile checklist
 description: The free listing that drives most local calls. Here's what to fill out, in order, so you show up when people nearby search.
 date: 2026-11-12
+cover: ../../assets/blog/google-business-profile.svg
+coverAlt: A turquoise map pin on a top-down street grid beside a park, above a five-star review card.
 ---
 
 For most local businesses, the Google Business Profile, the box with your map pin, hours, and reviews, brings in more calls than the website does. It's free, and most profiles are half finished.
